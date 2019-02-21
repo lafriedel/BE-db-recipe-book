@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
         const dishes = await Dishes.getDishes();
         res.status(200).json(dishes);
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).json({error: "There was an error retrieving the data."});
     }
 });
 
@@ -19,17 +19,17 @@ router.get("/:id", async (req,res) => {
         const dish = await Dishes.getDish(req.params.id);
         res.status(200).json(dish);
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).json({error: "There was an error retrieving the data."});
     }
 });
 
 // POST to /api/dishes using addDish(dish);
 router.post("/", async (req, res) => {
     try {
-        const newDish = await Dishes.addDish(req.body);
-        res.status(201).json(newDish);
+        const newDishId = await Dishes.addDish(req.body);
+        res.status(201).json(newDishId);
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).json({error: "There was an error adding the dish."});
     }
 });
 

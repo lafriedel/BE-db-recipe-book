@@ -9,16 +9,17 @@ router.get("/", async (req, res) => {
         const recipes = await Recipes.getRecipes();
         res.status(200).json(recipes);
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).json({error: "There was an error retrieving the data."});
     }
 });
 
 // POST to /api/recipes using addRecipe(recipe)
 router.post("/", async (req, res) => {
     try {
-
+        const newRecipeId = await Recipes.addRecipe(req.body);
+        res.status(201).json(newRecipeId);
     } catch (error) {
-
+        res.status(500).json({error: "There was an error adding the recipe."});
     }
 });
 
