@@ -46,11 +46,10 @@ async function getDish(id) {
 function getRecipes() {
 
   return db("recipes")
-    .join("dishes", "dishes.name as dish")
-    .where("dishes.id", "recipes.dish_id")
-    .orderBy("id", "asc")
-    .limit(24);
-
+    .join("dishes", "dishes.id", "recipes.dish_id")
+    .select("recipes.id", "recipes.name", "dishes.name as dish_name", "recipes.instructions")
+    .orderBy("recipes.id", "asc")
+    .limit(5);
 }
 
 async function addRecipe(recipe) {
