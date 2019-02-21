@@ -26,17 +26,20 @@ async function addDish(dish) {
 
 }
 
-function getDish(id) {
+async function getDish(id) {
 
-  const dish = db("dishes")
+  const reqDish = await db("dishes")
     .where("id", id)
     .first();
 
-  const recipes = db("recipes")
+  const reqRecipes = await db("recipes")
+    .select("recipes.id", "recipes.name", "recipes.instructions")
     .where("dish_id", id)
     .orderBy("id", "asc");
 
-  return { dish, recipes };
+    const result = {dish: reqDish, recipes: reqRecipes}
+
+  return result;
 
 }
 
@@ -55,5 +58,5 @@ async function addRecipe(recipe) {
   const [id] = await db("recipes").insert(recipe);
 
   return id;
-  
+
 }

@@ -19,9 +19,10 @@ router.get("/", async (req, res) => {
 // GET to /api/dishes/:id using getDish(id)
 router.get("/:id", async (req,res) => {
     try {
-
+        const dish = await Dishes.getDish(req.params.id);
+        res.status(200).json(dish);
     } catch (error) {
-        
+        res.status(500).json(error);
     }
 });
 
