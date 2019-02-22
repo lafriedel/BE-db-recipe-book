@@ -7,7 +7,8 @@ module.exports = {
   addDish,
   getDish,
   getRecipes,
-  addRecipe
+  addRecipe,
+  getRecipe
 };
 
 function getDishes() {
@@ -57,5 +58,17 @@ async function addRecipe(recipe) {
   const [id] = await db("recipes").insert(recipe);
 
   return id;
+
+}
+
+async function getRecipe(id) {
+    
+    const recipeInfo = await db("recipes")
+        .join("ingredients", "ingredients.id", "recipe_ingredients.ingredient_id")
+        .join("dishes", "dishes.id", "recipes.dish_id")
+        .select("dishes.name as dish", "recipes.name as recipe", "recipe_ingredients.ingredient_quantity as quantity", "ingredients.name as ingredients")
+        .where("recipes.id", id);
+
+        return recipeInfo;
 
 }

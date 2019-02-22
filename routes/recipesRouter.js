@@ -23,5 +23,15 @@ router.post("/", async (req, res) => {
     }
 });
 
+// GET to /api/recipes/:id using getRecipe(id)
+router.get("/:id", async (req, res) => {
+    try {
+        const recipe = await Recipes.getRecipe(req.params.id);
+        res.status(200).json(recipe);
+    } catch(error) {
+        res.status(500).json({error: "There was an error retrieving the data."});
+    }
+})
+
 
 module.exports = router;
