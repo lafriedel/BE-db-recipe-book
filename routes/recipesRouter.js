@@ -33,5 +33,14 @@ router.get("/:id", async (req, res) => {
     }
 })
 
+router.get("/:id/list", async (req, res) => {
+    try {
+        const list = await Recipes.getShoppingList(req.params.id);
+        res.status(200).json(list);
+    } catch (error) {
+        res.status(500).json({error: "There was an error retrieving the shopping list."})
+    }
+})
+
 
 module.exports = router;

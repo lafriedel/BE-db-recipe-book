@@ -8,7 +8,8 @@ module.exports = {
   getDish,
   getRecipes,
   addRecipe,
-  getRecipe
+  getRecipe,
+  getShoppingList
 };
 
 function getDishes() {
@@ -63,11 +64,17 @@ async function getRecipe(id) {
     .select("dishes.name as dish", "recipes.name as recipe")
     .where("recipes.id", id)
 
-  const ingredients = await db("recipes")
-    .join("recipe_ingredients", "recipes.id", "recipe_ingredients.recipe_id")
-    .join("ingredients", "ingredients.id", "recipe_ingredients.ingredient_id")
-    .select("ingredients.name", "recipe_ingredients.ingredient_quantity as quantity")
-    .where("recipes.id", id)
+  const ingredients = await getShoppingList(id);
 
     return {...dishAndRecipe, ingredients};
+}
+
+function getShoppingList(recipeId) {
+  const ingredients = db("recipes")
+  .join("recipe_ingredients", "recipes.id", "recipe_ingredients.recipe_id")
+  .join("ingredients", "ingredients.id", "recipe_ingredients.ingredient_id")
+  .select("ingredients.name", "recipe_ingredients.ingredient_quantity as quantity")
+  .where("recipes.id", recipeId)
+
+  return ingredients;
 }
